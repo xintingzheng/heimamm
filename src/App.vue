@@ -1,7 +1,5 @@
 <template>
-  <div id="app">
-    <el-button type="primary">主要按钮</el-button>
-
+  <div id="app" class="app-con">
     <router-view></router-view>
   </div>
 </template>
@@ -14,5 +12,7 @@ export default {
 </script>
 
 <style>
-
+  .app-con {
+    height: 100%;
+  }
 </style>
