@@ -8,7 +8,7 @@ Vue.use(VueRouter);
 
 // 实例化
 const router = new VueRouter({
-    routers: [
+    routes: [
         {
             path: "/index",
             component: index
