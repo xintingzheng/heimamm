@@ -125,8 +125,7 @@
 </template>
 
 <script>
-import {login} from '../../api/login.js'
-
+import axios from "axios";
 const validatePhone = (rule, value, callback) => {
   if (value == "") {
     callback(new Error("手机号不能为空"));
@@ -219,10 +218,16 @@ export default {
       }
       this.$refs[formName].validate(valid => {
         if (valid) {
-          login({
-            phone:this.ruleForm.phone,
-            password:this.ruleForm.password,
-            code:this.ruleForm.code,
+          axios({
+            url: process.env.VUE_APP_BASEURL + "/login",
+            method: "post",
+            //跨域 是否携带 cookie
+            withCredentials: true,
+            data: {
+              phone: this.ruleForm.phone,
+              password: this.ruleForm.password,
+              code: this.ruleForm.code
+            }
           }).then(res => {
             //成功回调
             if (res.data.code === 202) {
