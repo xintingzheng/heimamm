@@ -74,7 +74,7 @@
     <!-- 注册模块 -->
     <el-dialog center width="603px" title="用户注册" :visible.sync="dialogFormVisible">
       <!-- 注册表单 -->
-      <el-form class="register" :model="registerForm" :rules="registerRules">
+      <el-form ref="registerForm" class="register" :model="registerForm" :rules="registerRules">
         <el-form-item label="头像" prop="avatar" :label-width="formLabelWidth">
           <!-- 头像上传 -->
           <el-upload
@@ -91,7 +91,7 @@
         </el-form-item>
         <!-- 昵称 -->
         <el-form-item label="昵称" prop="username" :label-width="formLabelWidth">
-          <el-input v-model="registerForm.username"></el-input>
+          <el-input v-model="registerForm.username" autocomplete="off"></el-input>
         </el-form-item>
         <!-- 邮箱 -->
         <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth">
@@ -131,14 +131,16 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="submitRegister">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { login, sendsms } from "../../api/login.js";
+import { login, sendsms, register } from "../../api/login.js";
+// 导入token
+import {saveToken} from '../../utils/token.js'
 
 // 手机号验证方法
 const validatePhone = (rule, value, callback) => {
@@ -214,11 +216,11 @@ export default {
       //注册模块
       dialogFormVisible: false,
       registerForm: {
+        avatar: "",
+        username: "",
         phone: "",
         code: "",
-        username: "",
         email: "",
-        avatar: "",
         password: "",
         rcode: ""
       },
@@ -239,7 +241,7 @@ export default {
         password: [
           { required: true, message: "密码不能为空", trigger: "change" },
           { min: 6, max: 12, message: "密码的长度是6~12位", trigger: "change" }
-        ],
+        ]
       },
       // 头像上传地址
       uploadURL: process.env.VUE_APP_BASEURL + "/uploads",
@@ -277,6 +279,11 @@ export default {
             } else if (res.data.code === 200) {
               // 正确
               this.$message.success("欢迎回来~");
+              // 存token
+              // window.localStorage.setItem("heimammtoken", res.data.data.token);
+              saveToken(res.data.data.token)
+              // 登录成功  跳转首页
+              this.$router.push("/index");
             }
           });
         } else {
@@ -331,7 +338,7 @@ export default {
             // 清除定时器后,还原文本
             this.btnMessage = "获取用户验证码";
           }
-        }, 1000);
+        }, 100);
       } else {
         return;
       }
@@ -339,18 +346,20 @@ export default {
       // 调用短信验证码
       sendsms({
         code: this.registerForm.code,
-        phone: this.registerForm.phone,
+        phone: this.registerForm.phone
       }).then(res => {
         if (res.data.code == 200) {
           this.$message.success("短信验证码是:" + res.data.data.captcha);
         }
-      })
+      });
     },
 
     //头像
     // 上传成功
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
+      // 保存到注册表单的头像中
+      this.registerForm.avatar = res.data.file_path;
     },
     // 上传之前
     beforeAvatarUpload(file) {
@@ -364,6 +373,33 @@ export default {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
       return isJPG && isLt2M;
+    },
+    //提交注册
+    submitRegister() {
+      // 验证表单
+      this.$refs.registerForm.validate(valid => {
+        if (valid) {
+          register({
+            username: this.registerForm.username,
+            phone: this.registerForm.phone,
+            email: this.registerForm.email,
+            avatar: this.registerForm.avatar,
+            password: this.registerForm.password,
+            rcode: this.registerForm.rcode
+          }).then(res => {
+            if (res.data.code === 200) {
+              this.$message.success("注册成功,请登录");
+              // 关闭注册对话框
+              this.dialogFormVisible = false;
+            } else if (res.data.code === 201) {
+              this.$message.warning(res.data.message);
+            }
+          });
+        } else {
+          this.$message.error("格式不对哦,检查一下呗~");
+          return false;
+        }
+      });
     }
   }
 };
