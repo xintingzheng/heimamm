@@ -106,7 +106,7 @@
           <el-input show-password v-model="registerForm.password"></el-input>
         </el-form-item>
         <!-- 图形码 -->
-        <el-form-item label="图形码" :label-width="formLabelWidth">
+        <el-form-item label="图形码" prop="code" :label-width="formLabelWidth">
           <el-row>
             <el-col :span="16">
               <el-input v-model="registerForm.code" placeholder="请输入验证码"></el-input>
