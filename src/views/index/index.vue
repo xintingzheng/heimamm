@@ -1,35 +1,63 @@
 <template>
   <el-container class="index-container">
-      <el-header class="my-header">
-        <!-- 头部左侧标签 -->
-        <div class="left">
-          <i class="icon el-icon-s-fold"></i>
-          <img class="logo" src="../../assets/index-logo.png" alt="">
-          <span class="title">黑马面面</span>
-        </div>
-        <!-- 头部右侧标签 -->
-        <div class="right">
-          <img class="avatar" :src="userInfo.avatar" alt="">
-          <span class="userName">{{ userInfo.userName }},您好</span>
-          <el-button @click="logout" size="small" type="primary">退出</el-button>
-        </div>
-      </el-header>
+    <el-header class="my-header">
+      <!-- 头部左侧标签 -->
+      <div class="left">
+        <i class="icon el-icon-s-fold"></i>
+        <img class="logo" src="../../assets/index-logo.png" alt />
+        <span class="title">黑马面面</span>
+      </div>
+      <!-- 头部右侧标签 -->
+      <div class="right">
+        <img class="avatar" :src="userInfo.avatar" alt />
+        <span class="userName">{{ userInfo.userName }},您好</span>
+        <el-button @click="logout" size="small" type="primary">退出</el-button>
+      </div>
+    </el-header>
     <el-container>
-    <el-aside width="200px">Aside</el-aside>
+      <el-aside width="200px">
+        <el-menu
+          default-active="2"
+          class="el-menu-vertical-demo"
+          @open="handleOpen"
+          @close="handleClose"
+        >
+          <el-menu-item index="1">
+            <i class="el-icon-pie-chart"></i>
+            <span slot="title">数据概览</span>
+          </el-menu-item>
+          <el-menu-item index="2">
+            <i class="el-icon-user"></i>
+            <span slot="title">用户列表</span>
+          </el-menu-item>
+          <el-menu-item index="3">
+            <i class="el-icon-edit-outline"></i>
+            <span slot="title">题库列表</span>
+          </el-menu-item>
+          <el-menu-item index="4">
+            <i class="el-icon-office-building"></i>
+            <span slot="title">企业列表</span>
+          </el-menu-item>
+          <el-menu-item index="5">
+            <i class="el-icon-notebook-2"></i>
+            <span slot="title">学科列表</span>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
       <el-main>Main</el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
-import { info, logout } from '../../api/login.js';
-import { removeToken } from '../../utils/token.js';
+import { info, logout } from "../../api/login.js";
+import { removeToken } from "../../utils/token.js";
 
 export default {
   name: "index",
   data() {
     return {
-      userInfo: {},
+      userInfo: {}
     };
   },
   created() {
@@ -37,30 +65,31 @@ export default {
       // 保存数据
       this.userInfo = res.data.data;
       // 头像没有基地址 自己拼接
-      this.userInfo.avatar = process.env.VUE_APP_BASEURL + '/' + this.userInfo.avatar;
-    })
+      this.userInfo.avatar =
+        process.env.VUE_APP_BASEURL + "/" + this.userInfo.avatar;
+    });
   },
   methods: {
     logout() {
-      this.$confirm('您确认要退出吗?', '温馨提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+      this.$confirm("您确认要退出吗?", "温馨提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
           // 点击确定按钮
           logout().then(res => {
             if (res.data.code === 200) {
               // 退出成功
               removeToken();
               // 跳转登录页
-              this.$router.push('/login');
+              this.$router.push("/login");
             }
-          })
-        }).catch(() => {
-
-        });
+          });
+        })
+        .catch(() => {});
     }
-  },
+  }
 };
 </script>
 
@@ -74,15 +103,15 @@ export default {
       display: flex;
       align-items: center;
       .icon {
-      font-size: 24px;
-      margin-right: 22px;
+        font-size: 24px;
+        margin-right: 22px;
       }
       .logo {
         margin-right: 11px;
       }
       .title {
         font-size: 22px;
-        color: #49A1FF;
+        color: #49a1ff;
       }
     }
     .right {
