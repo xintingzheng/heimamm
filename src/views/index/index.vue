@@ -3,7 +3,7 @@
     <el-header class="my-header">
       <!-- 头部左侧标签 -->
       <div class="left">
-        <i class="icon el-icon-s-fold"></i>
+        <i @click="collapse =! collapse" class="icon el-icon-s-fold"></i>
         <img class="logo" src="../../assets/index-logo.png" alt />
         <span class="title">黑马面面</span>
       </div>
@@ -15,8 +15,9 @@
       </div>
     </el-header>
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="auto">
         <el-menu
+          :collapse="collapse"
           default-active="2"
           class="el-menu-vertical-demo"
           @open="handleOpen"
@@ -57,7 +58,8 @@ export default {
   name: "index",
   data() {
     return {
-      userInfo: {}
+      userInfo: {},
+      collapse: false
     };
   },
   created() {
@@ -129,6 +131,11 @@ export default {
         margin-right: 38px;
       }
     }
+  }
+  // 点击展开或收起
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
   }
 }
 </style>
