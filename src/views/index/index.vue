@@ -10,7 +10,7 @@
       <!-- 头部右侧标签 -->
       <div class="right">
         <img class="avatar" :src="userInfo.avatar" alt />
-        <span class="userName">{{ userInfo.userName }},您好</span>
+        <span class="username">{{ userInfo.username }},您好</span>
         <el-button @click="logout" size="small" type="primary">退出</el-button>
       </div>
     </el-header>
@@ -123,7 +123,7 @@ export default {
         margin-right: 9px;
         border-radius: 50%;
       }
-      .userName {
+      .username {
         font-size: 14px;
         color: #636363;
         margin-right: 38px;

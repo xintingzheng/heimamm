@@ -22,7 +22,7 @@ subjectRequest.interceptors.request.use(
 );
 
 // 添加响应拦截器
-subjectRequest.interceptors.request.use(
+subjectRequest.interceptors.response.use(
     function (response) {
         // 对响应的数据 做某些事情
         // .then 还没触发
