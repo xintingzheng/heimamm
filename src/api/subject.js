@@ -53,7 +53,7 @@ export function subjectAdd(data) {
     })
 }
 
-// 新增学科
+// 修改状态
 export function subjectStatus(data) {
     return subjectRequest({
         url: "/subject/status",

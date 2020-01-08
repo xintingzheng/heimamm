@@ -4,13 +4,13 @@
     <el-card class="enterprise-top">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="企业编号">
-          <el-input v-model="formInline.user"></el-input>
+          <el-input class="small" v-model="formInline.user"></el-input>
         </el-form-item>
         <el-form-item label="企业名称">
           <el-input v-model="formInline.user"></el-input>
         </el-form-item>
         <el-form-item label="创建者">
-          <el-input v-model="formInline.user"></el-input>
+          <el-input class="small" v-model="formInline.user"></el-input>
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="formInline.region" placeholder="请选择状态">
@@ -91,7 +91,7 @@
         </el-form-item>
         <!-- 学科简介 -->
         <el-form-item label="企业简介" prop="briefIntroduction" :label-width="formLabelWidth">
-          <el-input height="53px" id="briefIntroduction" v-model="registerForm.briefIntroduction" autocomplete="off"></el-input>
+          <el-input type="textarea"  :rows="2" v-model="registerForm.briefIntroduction" autocomplete="off"></el-input>
         </el-form-item>
         <!-- 学科备注 -->
         <el-form-item label="企业备注" prop="remarks" :label-width="formLabelWidth">
@@ -118,24 +118,13 @@ export default {
         serialNew: "",
         nameNew: "",
         forShort: "",
-        briefIntroduction: "",
+        briefIntroduction: ""
       },
       registerRules: {
-        serialNew: [
-          { required: true, trigger: "change" }
-        ],
-        nameNew: [
-          { required: true, trigger: "change" }
-        ],
-        forShort: [
-          { required: true, trigger: "change" }
-        ],
-        briefIntroduction: [
-          { required: true, trigger: "change" }
-        ],
-        remarks: [
-          { trigger: "change" }
-        ]
+        serialNew: [{ required: true, trigger: "change" }],
+        nameNew: [{ required: true, trigger: "change" }],
+        forShort: [{ required: true, trigger: "change" }],
+        briefIntroduction: [{ required: true, trigger: "change" }]
       },
       // title
       formInline: {
@@ -143,22 +132,7 @@ export default {
         region: ""
       },
       // 内容
-      tableData: [
-        {
-          serial: "QD001",
-          username: "黑马程序员",
-          creator: "刘洋洋",
-          createdDate: "2019-11-21",
-          status: "启用"
-        },
-        {
-          serial: "QD001",
-          username: "阿里巴巴",
-          creator: "北冰洋",
-          createdDate: "2019-11-21",
-          status: "禁用"
-        },
-      ],
+      tableData: [],
       // 分页模块 默认选中的页数
       currentPage4: 1
     };
@@ -210,8 +184,8 @@ export default {
     color: rgba(254, 254, 254, 1);
   }
 
-  #briefIntroduction {
-    height: 53px;
+  .small {
+    width: 100px;
   }
 }
 </style>
