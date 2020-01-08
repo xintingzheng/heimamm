@@ -68,3 +68,19 @@ html,body {
     margin: 0 auto;
     /* 固定宽度以及水平居中就是版心的特点 */
 }
+
+
+/* 组件的全局样式 */
+
+.el-dialog__header {
+    background: linear-gradient(
+      225deg,
+      rgba(20, 147, 250, 1),
+      rgba(1, 198, 250, 1)
+    );
+  }
+
+  .el-dialog__title,
+  .el-dialog__headerbtn .el-dialog__close {
+    color: rgba(254, 254, 254, 1);
+  }

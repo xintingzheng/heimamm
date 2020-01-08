@@ -130,6 +130,9 @@ export default {
       }
     }
   }
+  .my-main {
+    background-color: rgba(232, 233, 236);
+  }
   // 点击展开或收起
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
