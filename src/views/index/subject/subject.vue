@@ -4,13 +4,13 @@
     <el-card class="subject-top">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="学科编号">
-          <el-input v-model="formInline.user"></el-input>
+          <el-input class="small"  v-model="formInline.user"></el-input>
         </el-form-item>
         <el-form-item label="学科名称">
           <el-input v-model="formInline.user"></el-input>
         </el-form-item>
         <el-form-item label="创建者">
-          <el-input v-model="formInline.user"></el-input>
+          <el-input class="small"  v-model="formInline.user"></el-input>
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="formInline.region" placeholder="请选择状态">
@@ -27,7 +27,7 @@
           <el-button @click="onSubmit">清除</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button icon="el-icon-plus" type="primary" @click="dialogFormVisible = true">新增学科</el-button>
+          <el-button icon="el-icon-plus" type="primary" @click="$refs.addDialog.dialogFormVisible = true">新增学科</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -74,7 +74,7 @@
       ></el-pagination>
     </el-card>
 
-    <addDialog ref=""></addDialog>
+    <addDialog ref="addDialog"></addDialog>
   </div>
 </template>
 
@@ -84,6 +84,9 @@ import addDialog from "./components/addDialog.vue";
 
 export default {
   name: "subject",
+  components: {
+    addDialog,
+  },
   data() {
     return {
       
@@ -135,6 +138,10 @@ export default {
 
   #briefIntroduction {
     height: 53px;
+  }
+
+  .small {
+    width: 100px;
   }
 }
 </style>

@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       // 新增
-      formLabelWidth: "122px",
+      formLabelWidth: "100px",
       dialogFormVisible: false,
       registerForm: {
         serialNew: "",
