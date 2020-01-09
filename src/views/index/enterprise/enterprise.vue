@@ -57,7 +57,7 @@
               type="text"
               @click="changeStatus(scope.row)"
             >{{ scope.row.status == 1 ? "禁用": "启用"}}</el-button>
-            <el-button type="text">删除</el-button>
+            <el-button type="text" @click="removeItem(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -85,7 +85,11 @@
 import addDialog from "./components/addDialog.vue";
 
 // 接口组件
-import { enterpriseList, enterpriseStatus } from "@/api/enterprise.js";
+import {
+  enterpriseList,
+  enterpriseStatus,
+  enterpriseRemove
+} from "@/api/enterprise.js";
 
 export default {
   name: "enterprise",
@@ -116,12 +120,6 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
-      window.console.log("submit!");
-    },
-    handleClick(row) {
-      window.console.log(row);
-    },
     // 分页模块
     // 页容量
     handleSizeChange(val) {
@@ -135,7 +133,7 @@ export default {
     // 页码
     handleCurrentChange(val) {
       // 保存新页码
-      this.page = val; 
+      this.page = val;
       // 重新获取数据
       this.getList();
     },
@@ -173,8 +171,25 @@ export default {
     clearQuery() {
       this.$refs.formInline.resetFields();
       this.getList();
+    },
+    // 删除数据
+    removeItem(item) {
+      this.$confirm("您确定要删除这条数据吗?", "温馨提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          enterpriseRemove({
+            id: item.id
+          }).then(res => {
+            if (res.code === 200) {
+              this.getList();
+            }
+          });
+        })
+        .catch(() => {});
     }
-    // 数据分页
   },
   created() {
     this.getList();
