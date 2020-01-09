@@ -48,6 +48,8 @@ export default {
               this.dialogFormVisible = false;
               // 清空内容
               this.$refs.registerForm.resetFields();
+              // 重新获取数据
+              this.$parent.getList();
             } else if (res.code === 201) {
               // id重复
               this.$message.warning("学科的编号不能重复哦！！！");

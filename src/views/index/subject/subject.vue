@@ -177,6 +177,13 @@ export default {
         }).then(res => {
            if (res.code === 200) {
              this.$message.success("删除成功!");
+            //  判断还有没有数据
+            if (this.tableData.length == 1) {
+              // 如果当前页最后一条数据已被删除 页码--
+              this.page--;
+              // 如果数据已被删除完毕, 页码为 1
+              this.page = this.page ==0? 1: this.page;
+            }
             //  重新获取数据
             this.getList();
            }
@@ -185,6 +192,7 @@ export default {
     },
     // 查询数据
     searchSubject(){
+      this.page = 1;
       this.getList();
     },
     //清空搜索
