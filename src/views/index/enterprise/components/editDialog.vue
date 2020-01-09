@@ -49,7 +49,7 @@ export default {
         name: "",
         short_name: "",
         intro: "",
-        remark: "",
+        remark: ""
       },
       //   验证规则
       editRules: {
@@ -72,8 +72,15 @@ export default {
         if (valid) {
           // 点击确定验证表单
           enterpriseEdit(this.editForm).then(res => {
-              window.console.log(res)
-          })
+              if (res.code === 201) { //错误时提示
+                  this.$message.warning("企业编号不能重复哦~");
+              } else if (res.code === 200) {
+                // 关闭对话框
+                this.dialogFormVisible = false;
+                // 重新获取数据
+                this.$parent.getList();
+              }
+          });
         } else {
           this.$message.warning("输入的格式不对哦~ 重新输入呗!");
           return false;
