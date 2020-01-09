@@ -3,21 +3,19 @@
     <!-- 上半部分模块 -->
     <el-card class="enterprise-top">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="企业编号">
+        <el-form-item label="企业编号" prop="eid">
           <el-input class="small" v-model="formInline.user"></el-input>
         </el-form-item>
-        <el-form-item label="企业名称">
+        <el-form-item label="企业名称" prop="name">
           <el-input v-model="formInline.user"></el-input>
         </el-form-item>
-        <el-form-item label="创建者">
+        <el-form-item label="创建者" prop="username">
           <el-input class="small" v-model="formInline.user"></el-input>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item label="状态" prop="status">
           <el-select v-model="formInline.region" placeholder="请选择状态">
             <el-option label="优秀" value="shanghai"></el-option>
             <el-option label="良好" value="beijing"></el-option>
-            <el-option label="差" value="beijing"></el-option>
-            <el-option label="较差" value="beijing"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -27,7 +25,11 @@
           <el-button @click="onSubmit">清除</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button icon="el-icon-plus" type="primary" @click="dialogFormVisible = true">新增企业</el-button>
+          <el-button
+            icon="el-icon-plus"
+            type="primary"
+            @click="$refs.addDialog.dialogFormVisible = true"
+          >新增企业</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -37,8 +39,12 @@
         <el-table-column label="序号" type="index"></el-table-column>
         <el-table-column prop="eid" label="企业编号"></el-table-column>
         <el-table-column prop="name" label="企业名称"></el-table-column>
-        <el-table-column prop="creator" label="创建者"></el-table-column>
-        <el-table-column prop="createdDate" label="创建日期"></el-table-column>
+        <el-table-column prop="username" label="创建者"></el-table-column>
+        <el-table-column label="创建日期">
+          <template slot-scope="scope">
+            {{ scope.row }}
+          </template>
+        </el-table-column>
         <el-table-column prop="status" label="状态"></el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
@@ -80,20 +86,21 @@
 
 <script>
 // 导入新增组件
-import addDialog from './components/addDialog.vue';
+import addDialog from "./components/addDialog.vue";
 
 export default {
   name: "enterprise",
   components: {
-    addDialog,
+    addDialog
   },
   data() {
     return {
-      
       //表格的数据
       formInline: {
-        user: "",
-        region: ""
+        eid: "",
+        name: "",
+        username: "",
+        status: ""
       },
       // 内容
       tableData: [],
@@ -115,7 +122,6 @@ export default {
     handleCurrentChange(val) {
       window.console.log(`当前页: ${val}`);
     }
-    
   }
 };
 </script>
