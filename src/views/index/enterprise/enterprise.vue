@@ -35,6 +35,7 @@
     </el-card>
     <!-- 下半部分模块 -->
     <el-card class="enterprise-buttom">
+      <!-- 表格 -->
       <el-table :data="tableData" style="width: 100%">
         <el-table-column label="序号" type="index"></el-table-column>
         <el-table-column prop="eid" label="企业编号"></el-table-column>
@@ -122,11 +123,21 @@ export default {
       window.console.log(row);
     },
     // 分页模块
+    // 页容量
     handleSizeChange(val) {
-      window.console.log(`每页 ${val} 条`);
+      // 页码改为 1
+      this.page = 1;
+      // 保存新的页容量
+      this.size = val;
+      // 重新获取数据
+      this.getList();
     },
+    // 页码
     handleCurrentChange(val) {
-      window.console.log(`当前页: ${val}`);
+      // 保存新页码
+      this.page = val; 
+      // 重新获取数据
+      this.getList();
     },
     // 获取列表数据
     getList() {
@@ -163,6 +174,7 @@ export default {
       this.$refs.formInline.resetFields();
       this.getList();
     }
+    // 数据分页
   },
   created() {
     this.getList();
