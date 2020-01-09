@@ -2,27 +2,27 @@
   <div class="enterprise">
     <!-- 上半部分模块 -->
     <el-card class="enterprise-top">
-      <el-form :inline="true" :model="formInline" class="demo-form-inline">
+      <el-form ref="formInline" :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="企业编号" prop="eid">
-          <el-input class="small" v-model="formInline.user"></el-input>
+          <el-input class="small" v-model="formInline.eid"></el-input>
         </el-form-item>
         <el-form-item label="企业名称" prop="name">
-          <el-input v-model="formInline.user"></el-input>
+          <el-input v-model="formInline.name"></el-input>
         </el-form-item>
         <el-form-item label="创建者" prop="username">
-          <el-input class="small" v-model="formInline.user"></el-input>
+          <el-input class="small" v-model="formInline.username"></el-input>
         </el-form-item>
         <el-form-item label="状态" prop="status">
-          <el-select v-model="formInline.region" placeholder="请选择状态">
-            <el-option label="优秀" value="shanghai"></el-option>
-            <el-option label="良好" value="beijing"></el-option>
+          <el-select v-model="formInline.status" placeholder="请选择状态">
+            <el-option label="启用" value="1"></el-option>
+            <el-option label="禁用" value="0"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">搜索</el-button>
+          <el-button type="primary" @click="searchEnterprise">搜索</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="onSubmit">清除</el-button>
+          <el-button @click="clearQuery">清除</el-button>
         </el-form-item>
         <el-form-item>
           <el-button
@@ -153,6 +153,15 @@ export default {
           this.getList();
         }
       });
+    },
+    // 查询企业
+    searchEnterprise() {
+      this.getList();
+    },
+    // 清除搜索事件
+    clearQuery() {
+      this.$refs.formInline.resetFields();
+      this.getList();
     }
   },
   created() {
