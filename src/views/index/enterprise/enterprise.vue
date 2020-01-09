@@ -34,13 +34,13 @@
     <!-- 下半部分模块 -->
     <el-card class="enterprise-buttom">
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column label="序号" type="index" width="180"></el-table-column>
-        <el-table-column prop="serial" label="企业编号" width="180"></el-table-column>
-        <el-table-column prop="username" label="企业名称" width="180"></el-table-column>
+        <el-table-column label="序号" type="index"></el-table-column>
+        <el-table-column prop="eid" label="企业编号"></el-table-column>
+        <el-table-column prop="name" label="企业名称"></el-table-column>
         <el-table-column prop="creator" label="创建者"></el-table-column>
         <el-table-column prop="createdDate" label="创建日期"></el-table-column>
         <el-table-column prop="status" label="状态"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="120">
+        <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
             <el-button
               @click.native.prevent="deleteRow(scope.$index, tableData)"
@@ -90,7 +90,7 @@ export default {
   data() {
     return {
       
-      // title
+      //表格的数据
       formInline: {
         user: "",
         region: ""
