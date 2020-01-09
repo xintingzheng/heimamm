@@ -10,7 +10,8 @@ Vue.use(ElementUI);
 
 Vue.config.productionTip = false
 
-// window.console.log(process.env.VUE_APP_BASEURL)
+// 导入全局时间处理样式
+import './filters/index.js'
 
 new Vue({
   router,
