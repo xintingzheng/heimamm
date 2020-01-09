@@ -79,6 +79,8 @@ export default {
                 this.dialogFormVisible = false;
                 // 清空表单
                 this.$refs.addForm.resetFields();
+                // 重新获取数据
+                this.$parent.getList();
             } else if (res.code === 201) {
                 this.$message.error("企业编号已存在,请更换哦~")
             }

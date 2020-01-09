@@ -40,29 +40,27 @@
         <el-table-column prop="eid" label="企业编号"></el-table-column>
         <el-table-column prop="name" label="企业名称"></el-table-column>
         <el-table-column prop="username" label="创建者"></el-table-column>
-        <el-table-column prop="create_time" label="创建日期"></el-table-column>
-        <el-table-column prop="status" label="状态"></el-table-column>
+        <el-table-column prop="create_time" label="创建日期">
+          <template slot-scope="scope">{{ scope.row.create_itme | formatTime }}</template>
+        </el-table-column>
+        <el-table-column prop="status" label="状态">
+          <template slot-scope="scope">
+            <span v-if="scope.row.status == 1">启用</span>
+            <span class="red" v-else>禁用</span>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
+            <el-button type="text">编辑</el-button>
             <el-button
-              @click.native.prevent="deleteRow(scope.$index, tableData)"
               type="text"
-              size="small"
-            >编辑</el-button>
-            <el-button
-              @click.native.prevent="deleteRow(scope.$index, tableData)"
-              type="text"
-              size="small"
-            >禁用</el-button>
-            <el-button
-              @click.native.prevent="deleteRow(scope.$index, tableData)"
-              type="text"
-              size="small"
-            >删除</el-button>
+              @click="changeStatus(scope.row)"
+            >{{ scope.row.status == 1 ? "禁用": "启用"}}</el-button>
+            <el-button type="text">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-     <!-- 分页模块 -->
+      <!-- 分页模块 -->
       <el-pagination
         class="paging"
         @size-change="handleSizeChange"
@@ -72,6 +70,7 @@
         :page-size="size"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
+        background
       ></el-pagination>
     </el-card>
 
@@ -85,7 +84,7 @@
 import addDialog from "./components/addDialog.vue";
 
 // 接口组件
-import { enterpriseList } from '@/api/enterprise.js';
+import { enterpriseList, enterpriseStatus } from "@/api/enterprise.js";
 
 export default {
   name: "enterprise",
@@ -108,11 +107,11 @@ export default {
       // 分页容器 默认选中的页数
       page: 1,
       // 页容量选项
-      pageSizes:[5, 10, 20, 30],
+      pageSizes: [5, 10, 20, 30],
       // 默认选中的页容量
       size: 5,
       // 数据总条数
-      total: 0,
+      total: 0
     };
   },
   methods: {
@@ -128,21 +127,37 @@ export default {
     },
     handleCurrentChange(val) {
       window.console.log(`当前页: ${val}`);
+    },
+    // 获取列表数据
+    getList() {
+      enterpriseList({
+        page: this.page, // 页码
+        limit: this.size, // 页容量
+        ...this.formInline // 展开运算符 相当于把formInline丢到这里
+      }).then(res => {
+        // window.console.log(res);
+        // 设置 table 数据
+        this.tableData = res.data.items;
+        // 保存 总条数
+        this.total = res.data.pagination.total;
+      });
+    },
+    // 修改状态
+    changeStatus(item) {
+      enterpriseStatus({
+        id: item.id
+      }).then(res => {
+        // window.console.log(res);
+        if (res.code === 200) {
+          this.$message.success("修改成功~");
+          this.getList();
+        }
+      });
     }
   },
   created() {
-    enterpriseList({
-      page: this.page, // 页码
-      limit: this.size, // 页容量
-      ...this.formInline, // 展开运算符 相当于把formInline丢到这里
-    }).then(res => {
-      // window.console.log(res);
-      // 设置 table 数据
-      this.tableData = res.data.items;
-      // 保存 总条数
-      this.total = res.data.pagination.total;
-    })
-  },
+    this.getList();
+  }
 };
 </script>
 
@@ -176,6 +191,10 @@ export default {
 
   .small {
     width: 100px;
+  }
+
+  .red {
+    color: #ff0094;
   }
 }
 </style>

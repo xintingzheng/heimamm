@@ -41,7 +41,11 @@
         <el-table-column prop="name" label="学科名称"></el-table-column>
         <el-table-column prop="short_name" label="简称"></el-table-column>
         <el-table-column prop="username" label="创建者"></el-table-column>
-        <el-table-column prop="create_time" label="创建日期"></el-table-column>
+        <el-table-column prop="create_time" label="创建日期">
+          <template slot-scope="scope">
+            {{ scope.row.create_time | formatTime }}
+            </template>
+        </el-table-column>
         <el-table-column prop="status" label="状态">
           <template slot-scope="scope">
             <span v-if="scope.row.status == 0" class="red">禁用</span>
@@ -69,6 +73,7 @@
         :page-size="size"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
+        background
       ></el-pagination>
     </el-card>
     <!-- 新增输入框组件 -->
@@ -83,7 +88,7 @@
 import addDialog from "./components/addDialog.vue";
 import editDialog from "./components/editDialog.vue";
 // 导入学科接口
-import { subjectList, subjectStatus, subjectRemove,  } from "@/api/subject.js";
+import { subjectList, subjectStatus, subjectRemove } from "@/api/subject.js";
 
 export default {
   name: "subject",
@@ -102,7 +107,7 @@ export default {
         rid: "",
         name: "",
         username: "",
-        status: "",
+        status: ""
       },
       // 表格数据
       tableData: [],
@@ -166,32 +171,34 @@ export default {
     },
     // 删除数据
     removeSubject(item) {
-      this.$confirm('您确定要删除该条数据吗?', '温馨提示', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        //确认
-        subjectRemove({
-          id: item.id
-        }).then(res => {
-           if (res.code === 200) {
-             this.$message.success("删除成功!");
-            //  判断还有没有数据
-            if (this.tableData.length == 1) {
-              // 如果当前页最后一条数据已被删除 页码--
-              this.page--;
-              // 如果数据已被删除完毕, 页码为 1
-              this.page = this.page ==0? 1: this.page;
+      this.$confirm("您确定要删除该条数据吗?", "温馨提示", {
+        confirmButtonText: "确认",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          //确认
+          subjectRemove({
+            id: item.id
+          }).then(res => {
+            if (res.code === 200) {
+              this.$message.success("删除成功!");
+              //  判断还有没有数据
+              if (this.tableData.length == 1) {
+                // 如果当前页最后一条数据已被删除 页码--
+                this.page--;
+                // 如果数据已被删除完毕, 页码为 1
+                this.page = this.page == 0 ? 1 : this.page;
+              }
+              //  重新获取数据
+              this.getList();
             }
-            //  重新获取数据
-            this.getList();
-           }
+          });
         })
-      }).catch(() => {});
+        .catch(() => {});
     },
     // 查询数据
-    searchSubject(){
+    searchSubject() {
       this.page = 1;
       this.getList();
     },
