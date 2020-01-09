@@ -40,11 +40,7 @@
         <el-table-column prop="eid" label="企业编号"></el-table-column>
         <el-table-column prop="name" label="企业名称"></el-table-column>
         <el-table-column prop="username" label="创建者"></el-table-column>
-        <el-table-column label="创建日期">
-          <template slot-scope="scope">
-            {{ scope.row }}
-          </template>
-        </el-table-column>
+        <el-table-column prop="create_time" label="创建日期"></el-table-column>
         <el-table-column prop="status" label="状态"></el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
@@ -66,16 +62,16 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- 分页模块 -->
+     <!-- 分页模块 -->
       <el-pagination
         class="paging"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[10, 20, 30, 50]"
-        :page-size="10"
+        :current-page="page"
+        :page-sizes="pageSizes"
+        :page-size="size"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="200"
+        :total="total"
       ></el-pagination>
     </el-card>
 
@@ -87,6 +83,9 @@
 <script>
 // 导入新增组件
 import addDialog from "./components/addDialog.vue";
+
+// 接口组件
+import { enterpriseList } from '@/api/enterprise.js';
 
 export default {
   name: "enterprise",
@@ -105,7 +104,15 @@ export default {
       // 内容
       tableData: [],
       // 分页模块 默认选中的页数
-      currentPage4: 1
+      currentPage4: 1,
+      // 分页容器 默认选中的页数
+      page: 1,
+      // 页容量选项
+      pageSizes:[5, 10, 20, 30],
+      // 默认选中的页容量
+      size: 5,
+      // 数据总条数
+      total: 0,
     };
   },
   methods: {
@@ -122,7 +129,20 @@ export default {
     handleCurrentChange(val) {
       window.console.log(`当前页: ${val}`);
     }
-  }
+  },
+  created() {
+    enterpriseList({
+      page: this.page, // 页码
+      limit: this.size, // 页容量
+      ...this.formInline, // 展开运算符 相当于把formInline丢到这里
+    }).then(res => {
+      // window.console.log(res);
+      // 设置 table 数据
+      this.tableData = res.data.items;
+      // 保存 总条数
+      this.total = res.data.pagination.total;
+    })
+  },
 };
 </script>
 
