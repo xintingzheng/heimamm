@@ -62,7 +62,7 @@ export function enterpriseRemove(data) {
     })
 }
 
-// 查询数据
+// 编辑数据
 export function enterpriseEdit(data) {
     return enterpriseRequest({
         url: "/enterprise/edit",
@@ -71,7 +71,7 @@ export function enterpriseEdit(data) {
     })
 }
 
-// 修改数据
+// 修改状态
 export function enterpriseStatus(data) {
     return enterpriseRequest({
         url: "/enterprise/status",

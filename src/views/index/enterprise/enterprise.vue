@@ -52,7 +52,7 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
-            <el-button type="text">编辑</el-button>
+            <el-button type="text" @click="enterEdit(scope.row)">编辑</el-button>
             <el-button
               type="text"
               @click="changeStatus(scope.row)"
@@ -77,24 +77,29 @@
 
     <!-- 新增组件 -->
     <addDialog ref="addDialog"></addDialog>
+    <!-- 编辑组件 -->
+    <editDialog ref="editDialog"></editDialog>
   </div>
 </template>
 
 <script>
 // 导入新增组件
 import addDialog from "./components/addDialog.vue";
+// 导入编辑组件
+import editDialog from "./components/editDialog.vue";
 
 // 接口组件
 import {
   enterpriseList,
   enterpriseStatus,
-  enterpriseRemove
+  enterpriseRemove,
 } from "@/api/enterprise.js";
 
 export default {
   name: "enterprise",
   components: {
-    addDialog
+    addDialog,
+    editDialog
   },
   data() {
     return {
@@ -189,6 +194,13 @@ export default {
           });
         })
         .catch(() => {});
+    },
+    // 编辑数据
+    enterEdit(item) {
+      // 弹出输入框
+      this.$refs.editDialog.dialogFormVisible = true;
+      // 设置数据
+      this.$refs.editDialog.editForm = JSON.parse(JSON.stringify(item));
     }
   },
   created() {
