@@ -242,7 +242,7 @@ export default {
   }
 
   .red {
-    color: #ff0094;
+    color:#ff3d3d;
   }
 }
 </style>

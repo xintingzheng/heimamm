@@ -40,8 +40,19 @@
         <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
         <el-table-column prop="role_id" label="角色" width="180"></el-table-column>
         <el-table-column prop="remark" label="备注" width="180"></el-table-column>
-        <el-table-column prop="status" label="状态" width="180"></el-table-column>
-        <el-table-column label="操作" display="flex:1"></el-table-column>
+        <el-table-column @click="changeStatus" prop="status" label="状态" width="180">
+          <template slot-scope="scope">
+            <span v-if="scope.row.status == 1">启用</span>
+            <span class="red" v-else>禁用</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" display="flex:1">
+          <template slot-scope="scope">
+            <el-button type="text" >编辑</el-button>
+            <el-button type="text" @click="changeStatus(scope.row)">{{ scope.row.status == 1? "禁用": "启用"}}</el-button>
+            <el-button type="text" >删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <!-- 分页模块 -->
       <el-pagination
@@ -64,7 +75,7 @@
 <script>
 // 导入新增组件
 import addDialog from "./components/addDialog.vue";
-import { userList, } from "@/api/user.js";
+import { userList, userStatus,  } from "@/api/user.js";
 
 export default {
   name: "user",
@@ -97,18 +108,21 @@ export default {
     this.getList();
   },
   methods: {
-    onSubmit() {
-      window.console.log("submit!");
-    },
-    handleClick(row) {
-      window.console.log(row);
-    },
     // 分页模块
+    // 页容量
     handleSizeChange(val) {
-      window.console.log(`每页 ${val} 条`);
+      // 页码改为 1
+      this.page = 1;
+      // 保存新页容量
+      this.size = val;
+      // 重新获取数据
+      this.getList();
     },
     handleCurrentChange(val) {
-      window.console.log(`当前页: ${val}`);
+      // 保存新页码
+      this.page = val;
+      // 重新获取数据
+      this.getList();
     },
     // 获取数据
     getList() {
@@ -131,6 +145,18 @@ export default {
     clearQuery() {
       this.$refs.formInline.resetFields();
       this.getList();
+    },
+    // 修改状态
+    changeStatus(item) {
+      userStatus({
+        id: item.id
+      }).then(res => {
+        // window.console.log(res);
+        if (res.code === 200) {
+          this.$message.success("修改成功");
+          this.getList();
+        }
+      })
     }
     // this.$confirm("您确定要删除这个用户吗?", "温馨提示", {
     //     confirmButtonText: "确定",
@@ -179,6 +205,10 @@ export default {
 
   #briefIntroduction {
     height: 53px;
+  }
+
+  .red {
+    color: #ff3d3d;
   }
 }
 </style>

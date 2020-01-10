@@ -28,7 +28,7 @@ export function userRemove(data) {
     })
 }
 
-// 修改用户
+// 修改状态
 export function userStatus(data) {
     return userRequest({
         url: "/user/status",
