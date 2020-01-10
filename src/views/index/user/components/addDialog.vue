@@ -37,7 +37,28 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      // 新增
+      formLabelWidth: "88px",
+      dialogFormVisible: false,
+      registerForm: {
+        serialNew: "",
+        nameNew: "",
+        forShort: "",
+        briefIntroduction: ""
+      },
+      registerRules: {
+        serialNew: [{ required: true, trigger: "change" }],
+        nameNew: [{ required: true, trigger: "change" }],
+        forShort: [{ required: true, trigger: "change" }],
+        briefIntroduction: [{ required: true, trigger: "change" }],
+        remarks: [{ trigger: "change" }]
+      }
+    };
+  }
+};
 </script>
 
 <style>

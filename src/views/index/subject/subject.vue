@@ -2,7 +2,7 @@
   <div class="subject">
     <!-- 上半部分模块 -->
     <el-card class="subject-top">
-      <el-form :inline="true" :model="formInline" class="demo-form-inline">
+      <el-form :inline="true" :model="formInline" class="demo-form-inline" ref="formInline">
         <el-form-item label="学科编号" prop="rid">
           <el-input class="small" v-model="formInline.rid"></el-input>
         </el-form-item>

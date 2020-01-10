@@ -1,5 +1,5 @@
 <template>
-  <!-- 新增模块 -->
+  <!-- 编辑模块 -->
   <el-dialog center width="600px" title="编辑学科" :visible.sync="dialogFormVisible">
     <!-- 注册表单 -->
     <el-form ref="editForm" class="register" :model="editForm" :rules="editRules">
@@ -37,10 +37,10 @@ import { subjectEdit } from "@/api/subject.js";
 export default {
   methods: {
     submitEdit() {
-      this.$refs.registerForm.validate(valid => {
+      this.$refs.editForm.validate(valid => {
         // 成功
         if (valid) {
-          subjectEdit(this.registerForm).then(res => {
+          subjectEdit(this.editForm).then(res => {
             // window.console.log(res);
             if (res.code === 200) {
               this.$message.success("编辑成功");

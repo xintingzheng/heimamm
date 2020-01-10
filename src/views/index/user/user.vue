@@ -3,16 +3,17 @@
     <!-- 上半部分模块 -->
     <el-card class="user-top">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="用户名称">
-          <el-input v-model="formInline.user"></el-input>
+        <el-form-item prop="username" label="用户名称">
+          <el-input v-model="formInline.username"></el-input>
         </el-form-item>
-        <el-form-item label="用户邮箱">
-          <el-input v-model="formInline.user"></el-input>
+        <el-form-item prop="email" label="用户邮箱">
+          <el-input v-model="formInline.email"></el-input>
         </el-form-item>
-        <el-form-item label="角色">
-          <el-select v-model="formInline.region" placeholder="请选择状态">
-            <el-option label="优秀" value="shanghai"></el-option>
-            <el-option label="良好" value="beijing"></el-option>
+        <el-form-item prop="role_id" label="角色">
+          <el-select v-model="formInline.role_id" placeholder="请选择状态">
+            <el-option label="管理员" :value="2"></el-option>
+            <el-option label="老师" :value="3"></el-option>
+            <el-option label="学生" :value="4"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -29,13 +30,14 @@
     <!-- 下半部分模块 -->
     <el-card class="user-buttom">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="name" label="序号" type="index" width="120"></el-table-column>
-        <el-table-column fixed prop="date" label="日期" width="150"></el-table-column>
-        <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-        <el-table-column prop="province" label="省份" width="120"></el-table-column>
-        <el-table-column prop="city" label="市区" width="120"></el-table-column>
-        <el-table-column prop="address" label="地址" width="300"></el-table-column>
-        <el-table-column prop="zip" label="邮编" width="120"></el-table-column>
+        <el-table-column label="序号" type="index" width="120"></el-table-column>
+        <el-table-column prop="username" label="用户名" width="180"></el-table-column>
+        <el-table-column prop="phone" label="电话" width="180"></el-table-column>
+        <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
+        <el-table-column prop="role_id" label="角色" width="180"></el-table-column>
+        <el-table-column prop="remark" label="备注" width="180"></el-table-column>
+        <el-table-column prop="status" label="状态" width="180"></el-table-column>
+        <el-table-column label="操作" display="flex:1"></el-table-column>
       </el-table>
       <!-- 分页模块 -->
       <el-pagination
@@ -59,23 +61,8 @@ export default {
   name: "user",
   data() {
     return {
-      // 新增
-      formLabelWidth: "88px",
-      dialogFormVisible: false,
-      registerForm: {
-        serialNew: "",
-        nameNew: "",
-        forShort: "",
-        briefIntroduction: ""
-      },
-      registerRules: {
-        serialNew: [{ required: true, trigger: "change" }],
-        nameNew: [{ required: true, trigger: "change" }],
-        forShort: [{ required: true, trigger: "change" }],
-        briefIntroduction: [{ required: true, trigger: "change" }],
-        remarks: [{ trigger: "change" }]
-      },
-      // title
+      
+      // 表格的数据
       formInline: {
         user: "",
         region: ""
@@ -86,9 +73,9 @@ export default {
       // 默认选中的页数
       page: 1,
       // 页容量
-      size: 5,
+      size: 10,
       // 页容量选项
-      pageSizes: [5, 10, 20, 30],
+      pageSizes: [10, 20, 30, 50],
       // 总条数
       total: 0
     };
