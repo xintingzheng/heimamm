@@ -13,8 +13,6 @@
           <el-select v-model="formInline.region" placeholder="请选择状态">
             <el-option label="优秀" value="shanghai"></el-option>
             <el-option label="良好" value="beijing"></el-option>
-            <el-option label="差" value="beijing"></el-option>
-            <el-option label="较差" value="beijing"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -45,48 +43,14 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage4"
-        :page-sizes="[10, 20, 30, 50]"
-        :page-size="10"
+        :page-sizes="pageSizes"
+        :page-size="size"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="200"
+        :total="total"
       ></el-pagination>
     </el-card>
 
-    <!-- 新增模块 -->
-    <el-dialog center width="600px" title="新增企业" :visible.sync="dialogFormVisible">
-      <!-- 注册表单 -->
-      <el-form ref="registerForm" class="register" :model="registerForm" :rules="registerRules">
-        <!-- 学科编号 -->
-        <el-form-item label="企业编号" prop="serialNew" :label-width="formLabelWidth">
-          <el-input v-model="registerForm.serialNew" autocomplete="off"></el-input>
-        </el-form-item>
-        <!-- 学科名称 -->
-        <el-form-item label="企业名称" prop="nameNew" :label-width="formLabelWidth">
-          <el-input v-model="registerForm.nameNew" autocomplete="off"></el-input>
-        </el-form-item>
-        <!-- 学科简称 -->
-        <el-form-item label="企业简称" prop="forShort" :label-width="formLabelWidth">
-          <el-input v-model="registerForm.forShort" autocomplete="off"></el-input>
-        </el-form-item>
-        <!-- 学科简介 -->
-        <el-form-item label="企业简介" prop="briefIntroduction" :label-width="formLabelWidth">
-          <el-input
-            height="53px"
-            id="briefIntroduction"
-            v-model="registerForm.briefIntroduction"
-            autocomplete="off"
-          ></el-input>
-        </el-form-item>
-        <!-- 学科备注 -->
-        <el-form-item label="企业备注" prop="remarks" :label-width="formLabelWidth">
-          <el-input v-model="registerForm.remarks" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary">确 定</el-button>
-      </div>
-    </el-dialog>
+    
   </div>
 </template>
 
@@ -116,42 +80,17 @@ export default {
         user: "",
         region: ""
       },
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1517 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1519 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1516 弄",
-          zip: 200333
-        }
-      ],
+      tableData: [],
       // 分页模块 默认选中的页数
-      currentPage4: 1
+      currentPage4: 1,
+      // 默认选中的页数
+      page: 1,
+      // 页容量
+      size: 5,
+      // 页容量选项
+      pageSizes: [5, 10, 20, 30],
+      // 总条数
+      total: 0
     };
   },
   methods: {
