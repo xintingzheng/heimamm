@@ -1,32 +1,38 @@
 <template>
   <!-- 新增模块 -->
-  <el-dialog center width="600px" title="新增企业" :visible.sync="dialogFormVisible">
+  <el-dialog center width="600px" title="新增用户" :visible.sync="dialogFormVisible">
     <!-- 注册表单 -->
     <el-form ref="registerForm" class="register" :model="registerForm" :rules="registerRules">
-      <!-- 学科编号 -->
-      <el-form-item label="企业编号" prop="serialNew" :label-width="formLabelWidth">
-        <el-input v-model="registerForm.serialNew" autocomplete="off"></el-input>
+      <!-- 用户名 -->
+      <el-form-item label="用户名" prop="username" :label-width="formLabelWidth">
+        <el-input v-model="registerForm.username" autocomplete="off"></el-input>
       </el-form-item>
-      <!-- 学科名称 -->
-      <el-form-item label="企业名称" prop="nameNew" :label-width="formLabelWidth">
-        <el-input v-model="registerForm.nameNew" autocomplete="off"></el-input>
+      <!-- 邮箱 -->
+      <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth">
+        <el-input v-model="registerForm.email" autocomplete="off"></el-input>
       </el-form-item>
-      <!-- 学科简称 -->
-      <el-form-item label="企业简称" prop="forShort" :label-width="formLabelWidth">
-        <el-input v-model="registerForm.forShort" autocomplete="off"></el-input>
+      <!-- 电话 -->
+      <el-form-item label="电话" prop="phone" :label-width="formLabelWidth">
+        <el-input v-model="registerForm.phone" autocomplete="off"></el-input>
       </el-form-item>
-      <!-- 学科简介 -->
-      <el-form-item label="企业简介" prop="briefIntroduction" :label-width="formLabelWidth">
-        <el-input
-          height="53px"
-          id="briefIntroduction"
-          v-model="registerForm.briefIntroduction"
-          autocomplete="off"
-        ></el-input>
+      <!-- 角色 -->
+      <el-form-item prop="role_id" label="角色" :label-width="formLabelWidth">
+        <el-select v-model="registerForm.role_id" placeholder="请选择角色" >
+          <el-option label="管理员" value="2"></el-option>
+          <el-option label="老师" value="3"></el-option>
+          <el-option label="学生" value="4"></el-option>
+        </el-select>
       </el-form-item>
-      <!-- 学科备注 -->
-      <el-form-item label="企业备注" prop="remarks" :label-width="formLabelWidth">
-        <el-input v-model="registerForm.remarks" autocomplete="off"></el-input>
+      <!-- 状态 -->
+      <el-form-item prop="status" label="状态" :label-width="formLabelWidth">
+        <el-select v-model="registerForm.status" placeholder="请选择状态" >
+          <el-option label="禁用" value="0"></el-option>
+          <el-option label="启用" value="1"></el-option>
+        </el-select>
+      </el-form-item>
+      <!-- 用户备注 -->
+      <el-form-item label="用户备注" prop="remark" :label-width="formLabelWidth">
+        <el-input v-model="registerForm.remark" autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -44,17 +50,19 @@ export default {
       formLabelWidth: "88px",
       dialogFormVisible: false,
       registerForm: {
-        serialNew: "",
-        nameNew: "",
-        forShort: "",
-        briefIntroduction: ""
+        username: "",
+        email: "",
+        phone: "",
+        role_id: "",
+        status: "",
+        remark: ""
       },
       registerRules: {
-        serialNew: [{ required: true, trigger: "change" }],
-        nameNew: [{ required: true, trigger: "change" }],
-        forShort: [{ required: true, trigger: "change" }],
-        briefIntroduction: [{ required: true, trigger: "change" }],
-        remarks: [{ trigger: "change" }]
+        username: [{ required: true, trigger: "change" }],
+        email: [{ required: true, trigger: "change" }],
+        phone: [{ required: true, trigger: "change" }],
+        role_id: [{ required: true, message: "请选择角色", trigger: "change" }],
+        status: [{ message: "请选择状态", trigger: "change" }]
       }
     };
   }

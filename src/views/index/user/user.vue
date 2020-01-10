@@ -11,9 +11,9 @@
         </el-form-item>
         <el-form-item prop="role_id" label="角色">
           <el-select v-model="formInline.role_id" placeholder="请选择状态">
-            <el-option label="管理员" :value="2"></el-option>
-            <el-option label="老师" :value="3"></el-option>
-            <el-option label="学生" :value="4"></el-option>
+            <el-option label="管理员" value="2"></el-option>
+            <el-option label="老师" value="3"></el-option>
+            <el-option label="学生" value="4"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -23,7 +23,7 @@
           <el-button @click="onSubmit">清除</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button icon="el-icon-plus" type="primary" @click="dialogFormVisible = true">新增企业</el-button>
+          <el-button icon="el-icon-plus" type="primary" @click="$refs.addDialog.dialogFormVisible = true">新增企业</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -52,13 +52,21 @@
       ></el-pagination>
     </el-card>
 
-    
+    <!-- 新增组件 -->
+    <addDialog ref="addDialog"></addDialog>
   </div>
 </template>
 
 <script>
+// 导入新增组件
+import addDialog from './components/addDialog.vue'
+
 export default {
   name: "user",
+  // 注册组件
+  components: {
+    addDialog,
+  },
   data() {
     return {
       
