@@ -42,7 +42,7 @@ export function userStatus(data) {
 export function userList(params) {
     return userRequest({
         url: "/user/list",
-        method: "post",
+        method: "get",
         params,
     })
 }

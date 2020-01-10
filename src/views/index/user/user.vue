@@ -59,7 +59,8 @@
 
 <script>
 // 导入新增组件
-import addDialog from './components/addDialog.vue'
+import addDialog from './components/addDialog.vue';
+import { userList } from '@/api/user.js';
 
 export default {
   name: "user",
@@ -101,8 +102,20 @@ export default {
     },
     handleCurrentChange(val) {
       window.console.log(`当前页: ${val}`);
+    },
+    // 获取数据
+    getList() {
+      userList({
+        page: this.page, // 页码
+        limit: this.size, // 页容量
+        ...this.formInline // 展开运算符
+      }).then(res => {
+        // 设置 table 数据
+        this.tableData = res.data.items;
+        // 保存 总条数
+        this.total = res.data.pagination.total;
+      })
     }
-    // 新增按钮提交事件
   }
 };
 </script>
