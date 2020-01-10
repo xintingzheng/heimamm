@@ -2,7 +2,7 @@
   <div class="user">
     <!-- 上半部分模块 -->
     <el-card class="user-top">
-      <el-form :inline="true" :model="formInline" class="demo-form-inline">
+      <el-form ref="formInline" :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item prop="username" label="用户名称">
           <el-input v-model="formInline.username"></el-input>
         </el-form-item>
@@ -20,10 +20,14 @@
           <el-button type="primary" @click="userSearch">搜索</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="onSubmit">清除</el-button>
+          <el-button @click="clearQuery">清除</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button icon="el-icon-plus" type="primary" @click="$refs.addDialog.dialogFormVisible = true">新增企业</el-button>
+          <el-button
+            icon="el-icon-plus"
+            type="primary"
+            @click="$refs.addDialog.dialogFormVisible = true"
+          >新增企业</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -59,22 +63,22 @@
 
 <script>
 // 导入新增组件
-import addDialog from './components/addDialog.vue';
-import { userList } from '@/api/user.js';
+import addDialog from "./components/addDialog.vue";
+import { userList, } from "@/api/user.js";
 
 export default {
   name: "user",
   // 注册组件
   components: {
-    addDialog,
+    addDialog
   },
   data() {
     return {
-      
       // 表格的数据
       formInline: {
-        user: "",
-        region: ""
+        username: "",
+        email: "",
+        role_id: ""
       },
       tableData: [],
       // 分页模块 默认选中的页数
@@ -117,12 +121,30 @@ export default {
         this.tableData = res.data.items;
         // 保存 总条数
         this.total = res.data.pagination.total;
-      })
+      });
     },
     // 筛选
     userSearch() {
       this.getList();
+    },
+    // 清除筛选
+    clearQuery() {
+      this.$refs.formInline.resetFields();
+      this.getList();
     }
+    // this.$confirm("您确定要删除这个用户吗?", "温馨提示", {
+    //     confirmButtonText: "确定",
+    //     cancelButtonText: "取消",
+    //     type: "warning"
+    //   })
+    //     .then(() => {
+    //       userRemove({
+    //         id: item.id
+    //       }).then(res => {
+    //         window.console.log(res)
+    //       })
+    //     })
+    //     .catch(() => {});
   }
 };
 </script>
