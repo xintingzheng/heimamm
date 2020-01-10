@@ -17,7 +17,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">搜索</el-button>
+          <el-button type="primary" @click="userSearch">搜索</el-button>
         </el-form-item>
         <el-form-item>
           <el-button @click="onSubmit">清除</el-button>
@@ -89,6 +89,9 @@ export default {
       total: 0
     };
   },
+  created() {
+    this.getList();
+  },
   methods: {
     onSubmit() {
       window.console.log("submit!");
@@ -115,6 +118,10 @@ export default {
         // 保存 总条数
         this.total = res.data.pagination.total;
       })
+    },
+    // 筛选
+    userSearch() {
+      this.getList();
     }
   }
 };
