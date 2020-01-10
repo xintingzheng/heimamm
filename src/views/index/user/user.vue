@@ -48,9 +48,12 @@
         </el-table-column>
         <el-table-column label="操作" display="flex:1">
           <template slot-scope="scope">
-            <el-button type="text" >编辑</el-button>
-            <el-button type="text" @click="changeStatus(scope.row)">{{ scope.row.status == 1? "禁用": "启用"}}</el-button>
-            <el-button type="text" >删除</el-button>
+            <el-button type="text">编辑</el-button>
+            <el-button
+              type="text"
+              @click="changeStatus(scope.row)"
+            >{{ scope.row.status == 1? "禁用": "启用"}}</el-button>
+            <el-button type="text" @click="removeItem(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -75,7 +78,7 @@
 <script>
 // 导入新增组件
 import addDialog from "./components/addDialog.vue";
-import { userList, userStatus,  } from "@/api/user.js";
+import { userList, userStatus, userRemove } from "@/api/user.js";
 
 export default {
   name: "user",
@@ -156,21 +159,27 @@ export default {
           this.$message.success("修改成功");
           this.getList();
         }
+      });
+    },
+    // 删除数据
+    removeItem(item) {
+      this.$confirm("您确定要删除这个用户吗?", "温馨提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
       })
+        .then(() => {
+          userRemove({
+            id: item.id
+          }).then(res => {
+            // window.console.log(res);
+            if (res.code === 200) {
+              this.getList();
+            }
+          });
+        })
+        .catch(() => {});
     }
-    // this.$confirm("您确定要删除这个用户吗?", "温馨提示", {
-    //     confirmButtonText: "确定",
-    //     cancelButtonText: "取消",
-    //     type: "warning"
-    //   })
-    //     .then(() => {
-    //       userRemove({
-    //         id: item.id
-    //       }).then(res => {
-    //         window.console.log(res)
-    //       })
-    //     })
-    //     .catch(() => {});
   }
 };
 </script>
