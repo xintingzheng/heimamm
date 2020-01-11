@@ -38,7 +38,14 @@
         <el-table-column prop="username" label="用户名" width="180"></el-table-column>
         <el-table-column prop="phone" label="电话" width="180"></el-table-column>
         <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
-        <el-table-column prop="role_id" label="角色" width="180"></el-table-column>
+        <el-table-column prop="role_id" label="角色" width="180">
+          <template slot-scope="scope">
+            <span v-if="scope.row.role_id == 2">管理员</span>
+            <span v-else-if="scope.row.role_id == 3">老师</span>
+            <span v-else-if="scope.row.role_id == 4">学生</span>
+            <span v-else>超级管理员</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="remark" label="备注" width="180"></el-table-column>
         <el-table-column @click="changeStatus" prop="status" label="状态" width="180">
           <template slot-scope="scope">
@@ -48,7 +55,7 @@
         </el-table-column>
         <el-table-column label="操作" display="flex:1">
           <template slot-scope="scope">
-            <el-button type="text">编辑</el-button>
+            <el-button type="text" @click="enterEdit(scope.row)">编辑</el-button>
             <el-button
               type="text"
               @click="changeStatus(scope.row)"
@@ -72,19 +79,23 @@
 
     <!-- 新增组件 -->
     <addDialog ref="addDialog"></addDialog>
+    <!-- 编辑组件 -->
+    <editDialog ref="editDialog"></editDialog>
   </div>
 </template>
 
 <script>
 // 导入新增组件
 import addDialog from "./components/addDialog.vue";
-import { userList, userStatus, userRemove } from "@/api/user.js";
+import editDialog from "./components/editDialog.vue";
+import { userList, userStatus, userRemove, } from "@/api/user.js";
 
 export default {
   name: "user",
   // 注册组件
   components: {
-    addDialog
+    addDialog,
+    editDialog
   },
   data() {
     return {
@@ -179,6 +190,13 @@ export default {
           });
         })
         .catch(() => {});
+    },
+    // 编辑
+    enterEdit(item) {
+      // 弹出对话框
+      this.$refs.editDialog.dialogFormVisible = true;
+      // 设置数据
+      this.$refs.editDialog.editForm = JSON.parse(JSON.stringify(item));
     }
   }
 };

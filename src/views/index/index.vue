@@ -40,7 +40,7 @@
             <span slot="title">学科列表</span>
           </el-menu-item>
         </el-menu>
-      </el-aside>
+      </el-aside> 
       <el-main class="my-main">
         <router-view></router-view>
       </el-main>
@@ -50,7 +50,7 @@
 
 <script>
 import { info, logout } from "../../api/login.js";
-import { removeToken } from "../../utils/token.js";
+import { removeToken, getToken } from "../../utils/token.js";
 
 export default {
   name: "index",
@@ -60,8 +60,25 @@ export default {
       collapse: false
     };
   },
+  beforeCreate() {
+    const token = getToken();
+    if(token == null) {
+      this.$message.error("请先登录哦~");
+      this.$router.push("/login")
+    }
+  },
   created() {
     info().then(res => {
+      // window.console.log(res);
+      // 判断 token是真数据还是假数据
+      if (res.data.code === 206) {
+        // token错误 提示用户
+        this.$message.warning("您这是假登录哦~ 请您重新登录哟!");
+        // 删除 token
+        removeToken();
+        // 去登录页
+        this.$router.push("/login");
+      }
       // 保存数据
       this.userInfo = res.data.data;
       // 头像没有基地址 自己拼接

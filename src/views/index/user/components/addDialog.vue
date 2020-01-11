@@ -26,9 +26,9 @@
       <!-- 状态 -->
       <el-form-item prop="status" label="状态" :label-width="formLabelWidth">
         <el-select v-model="addForm.status" placeholder="请选择状态">
-          <el-option label="禁用" value="0"></el-option>
-          <el-option label="启用" value="1"></el-option>
-        </el-select>
+            <el-option label="启用" value="1"></el-option>
+            <el-option label="禁用" value="0"></el-option>
+          </el-select>
       </el-form-item>
       <!-- 用户备注 -->
       <el-form-item label="用户备注" prop="remark" :label-width="formLabelWidth">
